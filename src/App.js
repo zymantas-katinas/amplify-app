@@ -1,25 +1,34 @@
 /* src/App.js */
 import React, { useEffect, useState } from 'react'
 import Amplify, { API, graphqlOperation } from 'aws-amplify'
-import { createTodo } from './graphql/mutations'
-import { listTodos } from './graphql/queries'
+import { createTodo, createArtwork } from './graphql/mutations'
+import { listTodos, listArtworks } from './graphql/queries'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 
 import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
 
 const initialState = { name: '', description: '' }
+const initialStateArt = { title: '', image: '' }
 
 const App = () => {
   const [formState, setFormState] = useState(initialState)
   const [todos, setTodos] = useState([])
 
+  const [formStateArt, setFormStateArt] = useState(initialStateArt)
+  const [artworks, setArtworks] = useState([])
+
   useEffect(() => {
     fetchTodos()
+    fetchArts()
   }, [])
 
   function setInput(key, value) {
     setFormState({ ...formState, [key]: value })
+  }
+
+  function setInputArt(key, value) {
+    setFormStateArt({ ...formStateArt, [key]: value })
   }
 
   async function fetchTodos() {
@@ -27,6 +36,13 @@ const App = () => {
       const todoData = await API.graphql(graphqlOperation(listTodos))
       const todos = todoData.data.listTodos.items
       setTodos(todos)
+    } catch (err) { console.log('error fetching todos') }
+  }
+  async function fetchArts() {
+    try {
+      const artData = await API.graphql(graphqlOperation(listArtworks))
+      const artworks = artData.data.listArtworks.items
+      setArtworks(artworks)
     } catch (err) { console.log('error fetching todos') }
   }
 
@@ -42,6 +58,18 @@ const App = () => {
     }
   }
 
+  async function addArtwork() {
+    console.log(artworks)
+    try {
+      if (!formStateArt.title || !formStateArt.image) return
+      const artwork = { ...formStateArt }
+      setArtworks([...artworks, artwork])
+      setFormStateArt(initialStateArt)
+      await API.graphql(graphqlOperation(createArtwork, {input: artwork}))
+    } catch (err) {
+      console.log('error creating todo:', err)
+    }
+  }
   return (
     <div style={styles.container}>
       <h2>Amplify Todos</h2>
@@ -66,7 +94,32 @@ const App = () => {
           </div>
         ))
       }
+
+<h2>Amplify Artworks</h2>
+      <input
+        onChange={event => setInputArt('title', event.target.value)}
+        style={styles.input}
+        value={formStateArt.title} 
+        placeholder="Title"
+      />
+      <input
+        onChange={event => setInputArt('image', event.target.value)}
+        style={styles.input}
+        value={formStateArt.image}
+        placeholder="Image"
+      />
+      <button style={styles.button} onClick={addArtwork}>Create Artwork</button>
+      {
+        artworks.map((artwork, index) => (
+          <div key={artwork.id ? artwork.id : index} style={styles.todo}>
+            <p style={styles.todoName}>{artwork.title}</p>
+            <p style={styles.todoDescription}>{artwork.image}</p>
+          </div>
+        ))
+      }
     </div>
+
+
   )
 }
 
