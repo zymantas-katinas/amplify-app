@@ -3,3 +3,8 @@ type Todo @model {
   name: String!
   description: String
 }
+type Artwork @model {
+  id: ID!
+  title: String!
+  image: String
+}
