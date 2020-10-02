@@ -43,3 +43,45 @@ export const deleteTodo = /* GraphQL */ `
     }
   }
 `;
+export const createArtwork = /* GraphQL */ `
+  mutation CreateArtwork(
+    $input: CreateArtworkInput!
+    $condition: ModelArtworkConditionInput
+  ) {
+    createArtwork(input: $input, condition: $condition) {
+      id
+      title
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateArtwork = /* GraphQL */ `
+  mutation UpdateArtwork(
+    $input: UpdateArtworkInput!
+    $condition: ModelArtworkConditionInput
+  ) {
+    updateArtwork(input: $input, condition: $condition) {
+      id
+      title
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteArtwork = /* GraphQL */ `
+  mutation DeleteArtwork(
+    $input: DeleteArtworkInput!
+    $condition: ModelArtworkConditionInput
+  ) {
+    deleteArtwork(input: $input, condition: $condition) {
+      id
+      title
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;

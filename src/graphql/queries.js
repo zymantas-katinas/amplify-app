@@ -30,3 +30,32 @@ export const listTodos = /* GraphQL */ `
     }
   }
 `;
+export const getArtwork = /* GraphQL */ `
+  query GetArtwork($id: ID!) {
+    getArtwork(id: $id) {
+      id
+      title
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listArtworks = /* GraphQL */ `
+  query ListArtworks(
+    $filter: ModelArtworkFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listArtworks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        image
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

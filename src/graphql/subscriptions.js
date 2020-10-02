@@ -34,3 +34,36 @@ export const onDeleteTodo = /* GraphQL */ `
     }
   }
 `;
+export const onCreateArtwork = /* GraphQL */ `
+  subscription OnCreateArtwork {
+    onCreateArtwork {
+      id
+      title
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateArtwork = /* GraphQL */ `
+  subscription OnUpdateArtwork {
+    onUpdateArtwork {
+      id
+      title
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteArtwork = /* GraphQL */ `
+  subscription OnDeleteArtwork {
+    onDeleteArtwork {
+      id
+      title
+      image
+      createdAt
+      updatedAt
+    }
+  }
+`;
